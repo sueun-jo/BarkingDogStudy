@@ -7,48 +7,35 @@ using namespace std;
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    
-    int n;
-    cin >> n; //n입력받음
 
-    long long answer = 0;
-    
-    // 1 <= n <= 10억 -> 최대 10자리, 10자리 숫자는 딱 1개임
-    
-    long long arr[11] = {0, };
+    // 1. n을 입력받는다
+    long long n; 
+    cin >> n;
 
-    arr[1] = 9; //한자릿수의 갯수
-    arr[10] =1;
-    
-    for (int i=2; i<=10; i++){
-        arr[i] = arr[i-1]*10;
-    }
-
-    // 1. 숫자 입력 받고
-    // 2. 몇자리인지 확인해
-    
-    int cnt = 0;
-    int q=n;
+    // 2. n의 자릿수 cnt를 구한다
+    int cnt=0;
+    int q = n;
     while (q!=0){
         q /= 10;
-        cnt++; //자릿수 늘려요
+        cnt++; //자릿수 늘리기
     }
 
-    //cout << "자릿수 " << cnt << "\n";
+    // 3. cnt를 기준으로 i*9*10^i를 구하여 answer에 누적하여 더한다
+    // 자릿수가 4개면, 1 * 9*10^0개 + 2자릿수 90개 + 3자릿수 900개를 더해야함
+    long long answer = 0;
     
     for (int i=1; i<=cnt-1; i++){
-        answer += (i*arr[i]);
-        //cout << i << "자릿수" << arr[i] << "개" <<"\n";
+
+        answer += i*9*pow(10,i-1);
     }
-    
-    //cnt는 자릿수
-    
-    long long remain = n - (pow(10, cnt-1)-1);
-    //cout << "남은값" << remain << "\n";
-    
+
+    //4. 남은 remain을 계산한다. remain = n - (10^(cnt-1)-1)
+    // cnt * remian 값을 계산한다 
+
+    long long remain = n-(pow(10, cnt-1)-1);
     answer += cnt*remain;
-
+    
     cout << answer;
-
+    
     return 0;
 }
